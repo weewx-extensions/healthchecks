@@ -66,7 +66,7 @@ def send_ping(host, uuid, timeout, ping_type=None):
     if ping_type:
         url = f"https://{host}/{uuid}/{ping_type}"
     else:
-        url = "https://{host}/{uuid}"
+        url = f"https://{host}/{uuid}"
 
     try:
         urlopen(url, timeout=timeout)
