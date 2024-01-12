@@ -22,6 +22,20 @@ In the
 ```text
 [StdReport]
     [Healthchecks]
+    # Turn the extension on and off.
+    # Default is: true
+    # enable = true
+    
+    # The host to 'ping'
+    # Default is hc-ping.com
+    # host = hc-ping.com
+    
+    # The http request timeout
+    # The default is 10
+    # timeout = 10
+        
+    # The HealthChecks uuid
+    uuid = REPLACE_ME
 ```
 
 1. Set `enable = true`
