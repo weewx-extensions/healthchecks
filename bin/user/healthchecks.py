@@ -39,7 +39,7 @@ from weewx.reportengine import ReportGenerator
 
 from weeutil.weeutil import to_bool, to_int
 
-VERSION = "0.2"
+VERSION = "0.2.1"
 
 log = logging.getLogger(__name__)
 def setup_logging(logging_level, config_dict):
