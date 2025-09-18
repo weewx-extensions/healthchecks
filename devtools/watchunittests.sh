@@ -7,7 +7,7 @@
 
 ./devtools/unittests.sh
 
-while inotifywait -e modify devtools/watchunittests.sh devtools/unittests.sh bin/user/mqttpublish.py bin/user/tests/unit
+while inotifywait -e modify devtools/watchunittests.sh devtools/unittests.sh bin/user/healthchecks.py bin/user/tests/unit
 do
     ./devtools/unittests.sh $WEEWX $PY_VERSION
 done

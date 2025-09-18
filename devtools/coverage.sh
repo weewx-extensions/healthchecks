@@ -9,4 +9,4 @@ source ./devtools/python_versions.sh
 export PYENV_VERSION=$weewx_default_python_version
 PYTHONPATH=bin:../weewx/src coverage run --branch -m pytest bin/user/tests/unit; 
 
-coverage html --include bin/user/mqttpublish.py
+coverage html --include bin/user/healthchecks.py
