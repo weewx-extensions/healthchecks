@@ -10,7 +10,7 @@ jobs:
   analyze-test:
     uses: weewx-extensions/development_tools/.github/workflows/analyze-test.yml@v1.0.0
     with:
-      module-name: 'jas'
+      module-name: 'healthchecks'
       codecov-upload: false
       sonar-scan: false
     secrets:

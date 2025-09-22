@@ -1,4 +1,4 @@
-export WEEWX_MODULE_NAME=jas
+export WEEWX_MODULE_NAME=healthchecks
 
 export WEEWX_PYENV_VERSION='3.10'
 
