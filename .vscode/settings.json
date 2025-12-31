@@ -6,13 +6,23 @@
     "python.linting.flake8Enabled": true,
     //"python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8", // Adjust path to your venv
     "flake8.importStrategy": "fromEnvironment", 
-    "flake8.args": [
-        "--config=${workspaceFolder}/.flake8" // Path to your project's .flake8 config
-    ],
 
     //"python.linting.flake8CategorySeverity.F": "Error",
     "//python.linting.flake8CategorySeverity.E": "Error",
 
-    "sonarlint.disableTelemetry":true,
+    "sonarlint.disableTelemetry": true,
+
+    "python.analysis.extraPaths": [
+        "~/weewx_dev/weewx-extensions/weewx/src/"
+    ],
+    "flake8.ignorePatterns": [
+        "weewx/src/weewx/engine.py"
+    ],
+    "pylint.ignorePatterns": [
+        "**/site-packages/**/*.py",
+        ".vscode/*.py",
+        "/home/richbell/weewx/src/weewx/engine.py"
+
+    ]
 
 }
