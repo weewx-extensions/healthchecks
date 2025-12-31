@@ -3,18 +3,19 @@ name: Test the full analyze and test workflow
 on:
   push:
     branches: [ "master" ]
-  release:
-    types: [published]
   workflow_dispatch:
 
 jobs:
   analyze-test:
-    uses: weewx-extensions/development_tools/.github/workflows/full-analyze-test.yml@v2.0.0
+    uses: weewx-extensions/development_tools/.github/workflows/full-analyze-test.yml@v4
     with:
       module-name: 'healthchecks'
       #pip-list: 'paho-mqtt'
       #package-list: 'mosquitto'
+      function-test: false
       integration-test: false
+      e2e-test: false
+      #flake-extra-parms: '--exclude tests'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
