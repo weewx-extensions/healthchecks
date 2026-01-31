@@ -51,15 +51,15 @@ def setup_logging(logging_level, config_dict):
 
 def logdbg(msg):
     """ Log debug level. """
-    log.debug(msg)
+    log.debug("%s %s", threading.get_native_id(), msg)
 
 def loginf(msg):
     """ Log informational level. """
-    log.info(msg)
+    log.info("%s %s", threading.get_native_id(), msg)
 
 def logerr(msg):
     """ Log error level. """
-    log.error(msg)
+    log.error("%s %s", threading.get_native_id(), msg)
 
 def send_ping(host, uuid, timeout, ping_type=None):
     """Send the HealthChecks 'ping'."""
