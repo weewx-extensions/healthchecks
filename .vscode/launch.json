@@ -4,7 +4,21 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
+            {
+            "name": "Specific test",
+            "type": "debugpy",
+            "request": "launch",
+            //"program": "${file}",
+            "program": "bin/user/tests/unit/test_template.py",
+            "console": "integratedTerminal",
+            "args": [
+                //"TestInit",
+                //"test_PublishWeeWX_stanza_is_deprecated",
+
+                "TestTemplate",
+                "test_template",
+            ],
+        },
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",

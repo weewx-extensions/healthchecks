@@ -1,4 +1,4 @@
-#    Copyright (c) 2025 Rich Bell <bellrichm@gmail.com>
+#    Copyright (c) 2025-2026 Rich Bell <bellrichm@gmail.com>
 #
 #    See the file LICENSE.txt for your full rights.
 #
@@ -8,6 +8,8 @@ import logging
 
 import unittest
 import mock
+
+import helpers
 
 import user.healthchecks
 
@@ -33,8 +35,4 @@ class TestConfiguration(unittest.TestCase):
         print("end")
 
 if __name__ == '__main__':
-    test_suite = unittest.TestSuite()                                                    # noqa: E265
-    test_suite.addTest(TestConfiguration('test_enable_is_false'))  # noqa: E265
-    unittest.TextTestRunner().run(test_suite)                                            # noqa: E265
-
-    #unittest.main(exit=False)                                                           # noqa: E265
+    helpers.run_tests()

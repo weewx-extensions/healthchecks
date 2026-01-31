@@ -1,5 +1,5 @@
 #
-#    Copyright (c) 2021-2023 Rich Bell <bellrichm@gmail.com>
+#    Copyright (c) 2021-2026 Rich Bell <bellrichm@gmail.com>
 #
 #    See the file LICENSE.txt for your full rights.
 #
@@ -101,7 +101,7 @@ class HealthChecksService(StdService):
         # self._thread = HealthChecksServiceThread(self.host, self.uuid, self.timeout)
         # self._thread.start()
 
-    def new_archive_record(self, event): # Need to match signature pylint: disable=unused-argument
+    def new_archive_record(self, event):  # Need to match signature pylint: disable=unused-argument
         """The new archive record event."""
         self._thread.threading_event.set()
 
