@@ -135,6 +135,16 @@ class HealthChecksServiceThread(threading.Thread):
 
         self.threading_event = threading.Event()
 
+    # While using the @property decorator may seem like overkill
+    # It seems necessary to make unittest and mocking work
+    @property
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, value):
+        self._running = value
+
     def run(self):
         self.running = True
 
