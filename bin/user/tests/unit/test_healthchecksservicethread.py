@@ -28,9 +28,6 @@ class TestHealthChecksServiceThread(unittest.TestCase):
                     SUT.run()
 
                     mock_urlopen.assert_called_once_with(f"https://{host}/{uuid}", timeout=f"{timeout}")
-                    print("done 1")
-
-        print("done  2")
 
 if __name__ == '__main__':
     helpers.run_tests()

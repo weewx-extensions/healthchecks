@@ -15,8 +15,6 @@ import user.healthchecks
 
 class TestHealthChecksService(unittest.TestCase):
     def test_init(self):
-        print("start")
-
         mock_engine = mock.Mock()
         host = helpers.random_string()
         uuid = helpers.random_string()
@@ -37,11 +35,7 @@ class TestHealthChecksService(unittest.TestCase):
 
             mock_urlopen.assert_called_once_with(f"https://{host}/{uuid}/start", timeout=10)
 
-        print("end")
-
     def test_init_enable_is_false(self):
-        print("start")
-
         mock_engine = mock.Mock()
         config_dict = {
             'StdReport': {
@@ -62,13 +56,9 @@ class TestHealthChecksService(unittest.TestCase):
 
                 mock_info.assert_called_once_with("%s %s", thread_id, "Not enabled, exiting.")
 
-        print("end")
-
     def test_shutdown(self):
-        print("start")
-
         mock_engine = mock.Mock()
-    
+
         config_dict = {
             'StdReport': {
                 'HealthChecks': {
@@ -97,8 +87,6 @@ class TestHealthChecksService(unittest.TestCase):
                         SUT.shutDown()
 
                         mock_urlopen.assert_called_once_with(f"https://{host}/{uuid}/fail", timeout=timeout)
-
-        print("end")
 
 if __name__ == '__main__':
     helpers.run_tests()
