@@ -64,5 +64,41 @@ class TestHealthChecksService(unittest.TestCase):
 
         print("end")
 
+    def test_shutdown(self):
+        print("start")
+
+        mock_engine = mock.Mock()
+    
+        config_dict = {
+            'StdReport': {
+                'HealthChecks': {
+                    'enable': False
+                }
+            }
+        }
+        config = configobj.ConfigObj(config_dict)
+
+        logger = logging.getLogger('user.healthchecks')
+        with mock.patch('user.healthchecks.threading'):
+            with mock.patch.object(logger, 'info'):
+                with mock.patch.object(logger, 'error'):
+                    with mock.patch('user.healthchecks.urlopen') as mock_urlopen:
+
+                        SUT = user.healthchecks.HealthChecksService(mock_engine, config)
+
+                        host = helpers.random_string()
+                        uuid = helpers.random_string()
+                        timeout = helpers.random_string()
+                        SUT.host = host
+                        SUT.uuid = uuid
+                        SUT.timeout = timeout
+                        SUT._thread = mock.Mock()
+
+                        SUT.shutDown()
+
+                        mock_urlopen.assert_called_once_with(f"https://{host}/{uuid}/fail", timeout=timeout)
+
+        print("end")
+
 if __name__ == '__main__':
     helpers.run_tests()
