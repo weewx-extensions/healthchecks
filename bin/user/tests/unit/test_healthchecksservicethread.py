@@ -12,9 +12,12 @@ import user.healthchecks
 
 class TestHealthChecksServiceThread(unittest.TestCase):
     def test_run(self):
+        host = helpers.random_string()
+        uuid = helpers.random_string()
+        timeout = helpers.random_string()
         with mock.patch('user.healthchecks.threading'):
-            with mock.patch('user.healthchecks.urlopen'):
-                SUT = user.healthchecks.HealthChecksServiceThread(None, None, None)
+            with mock.patch('user.healthchecks.urlopen') as mock_urlopen:
+                SUT = user.healthchecks.HealthChecksServiceThread(host, uuid, timeout)
 
                 with mock.patch.object(user.healthchecks.HealthChecksServiceThread, 'running', new_callable=mock.PropertyMock) as mock_running:
                     # ToDo: Why does the first item 'disappear'?
@@ -23,6 +26,8 @@ class TestHealthChecksServiceThread(unittest.TestCase):
                     mock_running.side_effect = [True, True, False]
 
                     SUT.run()
+
+                    mock_urlopen.assert_called_once_with(f"https://{host}/{uuid}", timeout=f"{timeout}")
                     print("done 1")
 
         print("done  2")
