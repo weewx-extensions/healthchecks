@@ -112,7 +112,7 @@ class HealthChecksService(StdService):
 
     def shutdown_event(self, event):
         send_ping(self.host, self.uuid, self.timeout, "fail", event.error['stacktrace'])
-         loginf("fail ping sent")
+        loginf("fail ping sent")
         self.fail_ping_sent = True
 
     def new_archive_record(self, event):  # Need to match signature pylint: disable=unused-argument
