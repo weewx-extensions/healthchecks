@@ -30,7 +30,7 @@ import logging
 import socket
 import threading
 
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 import weewx
 import weeutil.logger
@@ -61,17 +61,23 @@ def logerr(msg):
     """ Log error level. """
     log.error("%s %s", threading.get_native_id(), msg)
 
-def send_ping(host, uuid, timeout, ping_type=None):
+def send_ping(host, uuid, timeout, ping_type=None, log=None):
     """Send the HealthChecks 'ping'."""
     if ping_type:
         url = f"https://{host}/{uuid}/{ping_type}"
     else:
         url = f"https://{host}/{uuid}"
 
+    data = None
+    if log:
+        data = log.encode("utf-8")
+
+    req = Request(url, data=data)
+
     try:
-        urlopen(url, timeout=timeout)
+        urlopen(req,timeout=timeout)
     except socket.error as exception:
-        logerr(f"Ping failed: {exception}")
+        logerr(f"{ping_type} failed: {exception}")
 
 class HealthChecksService(StdService):
     """ A service to ping a healthchecks server.. """
@@ -92,6 +98,7 @@ class HealthChecksService(StdService):
         if not self.uuid:
             raise ValueError("uuid option is required.")
 
+        self.fail_ping_sent = False
         self._thread = None
 
         send_ping(self.host, self.uuid, self.timeout, "start")
@@ -101,6 +108,13 @@ class HealthChecksService(StdService):
         # self._thread = HealthChecksServiceThread(self.host, self.uuid, self.timeout)
         # self._thread.start()
 
+        self.bind(weewx.SHUTDOWN, self.shutdown_event)
+
+    def shutdown_event(self, event):
+        send_ping(self.host, self.uuid, self.timeout, "fail", event.error['stacktrace'])
+         loginf("fail ping sent")
+        self.fail_ping_sent = True
+
     def new_archive_record(self, event):  # Need to match signature pylint: disable=unused-argument
         """The new archive record event."""
         self._thread.threading_event.set()
@@ -109,8 +123,10 @@ class HealthChecksService(StdService):
         """Run when an engine shutdown is requested."""
         loginf("SHUTDOWN - initiated")
 
-        send_ping(self.host, self.uuid, self.timeout, "fail")
-        loginf("fail ping sent")
+        # If someone is running a version of WeeWX that does have a SHUTDOWN event, send the 'fail' ping.
+        if not self.fail_ping_sent:
+            send_ping(self.host, self.uuid, self.timeout, "fail")
+            loginf("fail ping sent")
 
         if self._thread:
             loginf("SHUTDOWN - thread initiated")
