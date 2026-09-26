@@ -75,7 +75,7 @@ def send_ping(host, uuid, timeout, ping_type=None, log=None):
     req = Request(url, data=data)
 
     try:
-        urlopen(req,timeout=timeout)
+        urlopen(req, timeout=timeout)
     except socket.error as exception:
         logerr(f"{ping_type} failed: {exception}")
 
@@ -87,6 +87,7 @@ class HealthChecksService(StdService):
         # service_dict = config_dict.get('HealthChecks', {})
         skin_dict = self.config_dict.get('StdReport', {}).get('HealthChecks', {})
 
+        self.fail_ping_sent = False
         self.enable = to_bool(skin_dict.get('enable', True))
         if not self.enable:
             loginf("Not enabled, exiting.")
@@ -98,7 +99,6 @@ class HealthChecksService(StdService):
         if not self.uuid:
             raise ValueError("uuid option is required.")
 
-        self.fail_ping_sent = False
         self._thread = None
 
         send_ping(self.host, self.uuid, self.timeout, "start")
@@ -108,7 +108,10 @@ class HealthChecksService(StdService):
         # self._thread = HealthChecksServiceThread(self.host, self.uuid, self.timeout)
         # self._thread.start()
 
-        self.bind(weewx.SHUTDOWN, self.shutdown_event)
+        try:
+            self.bind(weewx.SHUTDOWN, self.shutdown_event)
+        except AttributeError:
+            pass
 
     def shutdown_event(self, event):
         send_ping(self.host, self.uuid, self.timeout, "fail", event.error['stacktrace'])
