@@ -16,6 +16,8 @@ jobs:
       function-test: false
       integration-test: false
       e2e-test: false
+      # There is no Codacy project for this repository.
+      codacy-upload: false
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
