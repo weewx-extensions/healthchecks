@@ -61,7 +61,7 @@ def logerr(msg):
     """ Log error level. """
     log.error("%s %s", threading.get_native_id(), msg)
 
-def send_ping(host, uuid, timeout, ping_type=None, log=None):
+def send_ping(host, uuid, timeout, ping_type=None, body=None):
     """Send the HealthChecks 'ping'."""
     if ping_type:
         url = f"https://{host}/{uuid}/{ping_type}"
@@ -69,20 +69,21 @@ def send_ping(host, uuid, timeout, ping_type=None, log=None):
         url = f"https://{host}/{uuid}"
 
     data = None
-    if log:
-        data = log.encode("utf-8")
+    if body:
+        data = body.encode("utf-8")
 
     req = Request(url, data=data)
 
     try:
-        urlopen(req, timeout=timeout)
+        with urlopen(req, timeout=timeout):
+            pass
     except socket.error as exception:
         logerr(f"{ping_type} failed: {exception}")
 
 class HealthChecksService(StdService):
     """ A service to ping a healthchecks server.. """
     def __init__(self, engine, config_dict):
-        super(HealthChecksService, self).__init__(engine, config_dict)
+        super().__init__(engine, config_dict)
 
         # service_dict = config_dict.get('HealthChecks', {})
         skin_dict = self.config_dict.get('StdReport', {}).get('HealthChecks', {})
@@ -114,6 +115,7 @@ class HealthChecksService(StdService):
             pass
 
     def shutdown_event(self, event):
+        """Send the 'fail' ping with the shutdown stack trace."""
         send_ping(self.host, self.uuid, self.timeout, "fail", event.error['stacktrace'])
         loginf("fail ping sent")
         self.fail_ping_sent = True
@@ -158,13 +160,16 @@ class HealthChecksServiceThread(threading.Thread):
     # It seems necessary to make unittest and mocking work
     @property
     def running(self):
+        """Whether the thread should keep sending pings."""
         return self._running
 
     @running.setter
     def running(self, value):
+        """Set whether the thread should keep sending pings."""
         self._running = value
 
     def run(self):
+        """Send a ping whenever the event is set."""
         self.running = True
 
         while self.running:

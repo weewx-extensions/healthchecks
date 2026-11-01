@@ -1,4 +1,5 @@
-name: Keep the versions up to date
+name: Keep the versions up-to-date
+
 on:
   release:
     types:

@@ -1,7 +1,23 @@
+# Do not inherit settings from another repository's .devenv.
+unset WEEWX_LINT_PATHS WEEWX_TEST_SUITES WEEWX_HTML WEEWX_RESULTS_DIR
+
 export WEEWX_MODULE_NAME=healthchecks
 
 export WEEWX_PYENV_VERSION='3.10'
 
 export WEEWX_TOOL_PATH=~/weewx_dev/weewx-extensions/development-tools/tools
+# weewx is a sibling checkout here, not installed into the pyenv environment.
 export WEEWX_PYTHONPATH=bin:../weewx/src
+
+# What the analyze-test workflow lints, its lint-paths input.
+# Defaults to bin/user/${WEEWX_MODULE_NAME}.py
+#export WEEWX_LINT_PATHS='./bin/user/healthchecks.py'
+
+# Which suites the analyze-test workflow runs.
+# Defaults to 'unit func integ e2e'
+#export WEEWX_TEST_SUITES='unit func integ e2e'
+
+# Write the HTML test reports the workflow archives. Needs pytest-html.
+#export WEEWX_HTML=1
+
 PATH=$WEEWX_TOOL_PATH:$PATH
