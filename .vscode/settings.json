@@ -13,7 +13,7 @@
     "sonarlint.disableTelemetry": true,
 
     "python.analysis.extraPaths": [
-        "~/weewx_dev/weewx-extensions/weewx/src/"
+        "~/weewx_code/weewx-extensions/weewx/src/"
     ],
     "flake8.ignorePatterns": [
         "weewx/src/weewx/engine.py"
