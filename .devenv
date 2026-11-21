@@ -1,34 +1,11 @@
-# Do not inherit settings from another repository's .devenv.
-unset WEEWX_LINT_PATHS WEEWX_LINT_FAIL WEEWX_TEST_SUITES WEEWX_HTML WEEWX_RESULTS_DIR
-unset WEEWX_COMMON_REPOS WEEWX_COMMON_SRC
+# Bootstrap: the shared settings live in the development-tools checkout.
+WEEWX_TOOL_PATH=${WEEWX_TOOL_PATH:-$HOME/weewx_code/weewx-extensions/development-tools/tools}
+. "${WEEWX_TOOL_PATH}/devenv.sh"
 
 export WEEWX_MODULE_NAME=healthchecks
 
-export WEEWX_PYENV_VERSION='3.10'
-
-export WEEWX_TOOL_PATH=~/weewx_code/weewx-extensions/development-tools/tools
 # weewx is a sibling checkout here, not installed into the pyenv environment.
 export WEEWX_PYTHONPATH=bin:../weewx/src
 
-# What the analyze-test workflow lints, its lint-paths input.
-# Defaults to bin/user/${WEEWX_MODULE_NAME}.py
-#export WEEWX_LINT_PATHS='./bin/user/healthchecks.py'
-
-# The shared repositories this repository vendors, its common-repos input.
-# Each one lists its files in common-files.txt.
-#export WEEWX_COMMON_REPOS='https://github.com/weewx-mqtt/mqttcommon'
-
-# Where the shared repositories' sibling checkouts are.
-#export WEEWX_COMMON_SRC=..
-
-# Which suites the analyze-test workflow runs.
-# Defaults to 'unit func integ e2e'
-#export WEEWX_TEST_SUITES='unit func integ e2e'
-
-# Report the lint findings instead of failing, the workflow's lint-fail input.
-#export WEEWX_LINT_FAIL=0
-
-# Write the HTML test reports the workflow archives. Needs pytest-html.
-#export WEEWX_HTML=1
-
-PATH=$WEEWX_TOOL_PATH:$PATH
+# What the analyze-test workflow lints.
+export WEEWX_LINT_PATHS='./bin/user/healthchecks.py'
